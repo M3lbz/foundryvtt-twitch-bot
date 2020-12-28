@@ -8,7 +8,7 @@
     "compatibleCoreVersion": "0.7.9",
   
     "styles": [],
-    "esmodules": ["scripts/main.js"],
+    "esmodules": ["scripts/tmi.min.js", "scripts/main.js"],
     "languages": [
         {
           "lang": "en",
