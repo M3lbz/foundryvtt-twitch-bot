@@ -10,8 +10,6 @@ Hooks.on("init", function() {
 });
 
 Hooks.on("ready", function() {
-  //if we are not the game master do not make the connection
-  if (!game.user.isGM) return
 
   // Set up twitch chat reader
   game.twitchClient = new tmi.Client({
@@ -24,7 +22,10 @@ Hooks.on("ready", function() {
 
   game.twitchClient.connect().catch(console.error);
   game.twitchClient.on('message', (channel, tags, message, self) => {
-    WhisperGM(`<b>${tags['display-name']}</b>: ${message} <i>(${channel})</i>`);
+      //if we are not the game master do not send the whisper
+      if (game.user.isGM) {
+        WhisperGM(`<b>${tags['display-name']}</b>: ${message} <i>(${channel})</i>`);
+      }
   });
 });
 
