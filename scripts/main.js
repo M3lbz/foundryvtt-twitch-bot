@@ -60,9 +60,16 @@ window.TriggerVote = (name, data) => {
   TwitchBot.votingIsOn = true;
   TwitchBot.options = {};
 
-  for (let i; i < data.length; i++) {
-    TwitchBot.options[data.length[i]] = 0;
+  for (let i = 0; i < data.length; i++) {
+    TwitchBot.options[data[i]] = 0;
   }
+
+  WhisperGM(`
+    <h1>${TwitchBot.voteTopic}</h1>
+    </br>
+    <ol>${data.map(opt => `<li>${opt}</li>`).join("")}</ol>
+    `);
+
 }
 
 window.Vote = (name, vote) => {
@@ -85,6 +92,9 @@ window.Vote = (name, vote) => {
   }
 
   window.EndVote = () => {
+  const winner = Object.entries(TwitchBot.options).sort((a, b) => b[1] - a[1])[0][0];
+
+  WhisperGM(`<h1>${TwitchBot.voteTopic}</h1> </br> THE WINNER IS: ${winner} 👏👏👏`);
   TwitchBot.votingIsOn = false;
   TwitchBot.options = {};
 }
