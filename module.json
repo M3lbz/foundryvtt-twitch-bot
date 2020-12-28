@@ -1,0 +1,25 @@
+{
+    "name": "twitch-bot",
+    "title": "Twitch Bot",
+    "description": "Integrates with Twich chats and enables audience participation",
+    "author": "Melbz",
+    "version": "v1.0.0",
+    "minimumCoreVersion": "0.7.5",
+    "compatibleCoreVersion": "0.7.9",
+  
+    "styles": [],
+    "esmodules": ["autorotate.js"],
+    "languages": [
+        {
+          "lang": "en",
+          "name": "English",
+          "path": "lang/en.json"
+        }
+    ],
+  
+    "bugs": "https://peachy-melbz.atlassian.net/jira/software/projects/FTBOT/boards/2",
+    "url": "https://bitbucket.org/Melbz/foundryvtt-twitch-bot/src/master/",
+  
+    "manifest": "",
+    "download": ""
+  }
