@@ -1,7 +1,7 @@
 Hooks.on('init', function() {
   game.settings.register('foundry-twitch-bot', 'twitchBotChannelNames', {
     name: 'Player Channel Names',
-    hint: 'Comma delimited list of channels you would like to monitor the chat for. e.g. \'channel1,channel2\'',
+    hint: 'Comma delimited list of channels you would like to monitor the chat for. e.g. \'channel1,channel2\' (requires refresh)',
     scope: 'world',
     config: true,
     type: String,
@@ -37,7 +37,7 @@ Hooks.on('ready', function() {
   });
 });
 
-var TwitchBot = {
+window.TwitchBot = {
   client: null,
   votingIsOn: false,
   voteTopic: "",
@@ -45,17 +45,7 @@ var TwitchBot = {
   voters: {},
 };
 
-
-/*
- * HELPERS
- */
-
-/**
- * Helper for sending a whisper to the GM
- * 
- * @param {*} content 
- */
-function WhisperGM(content) {
+window.WhisperGM = (content) => {
   ChatMessage.create({
     content: content,
     whisper: [game.users.find((u) => u.isGM)],
@@ -63,13 +53,7 @@ function WhisperGM(content) {
   });
 }
 
-/**
- * Helper function for triggering a vote
- * 
- * @param {*} name 
- * @param {*} data 
- */
-function TriggerVote(name, data) {
+window.TriggerVote = (name, data) => {
   console.log('TriggerVote');
   TwitchBot.voteTopic = name;
   TwitchBot.voters = {};
@@ -81,13 +65,7 @@ function TriggerVote(name, data) {
   }
 }
 
-/**
- * Helper function for registering the votes
- * 
- * @param {*} name 
- * @param {*} index 
- */
-function Vote(name, vote) {
+window.Vote = (name, vote) => {
     const optionsAsArray = Object.keys(TwitchBot.options);
     
     // Ignore invalid votes
@@ -106,14 +84,7 @@ function Vote(name, vote) {
     TwitchBot.options[optionsAsArray[voteAsIndex]] += 1;
   }
 
-
-/**
- * Helper function for ending a vote
- * 
- * @param {*} name 
- * @param {*} data 
- */
-function EndVote() {
+  window.EndVote = () => {
   TwitchBot.votingIsOn = false;
   TwitchBot.options = {};
 }
