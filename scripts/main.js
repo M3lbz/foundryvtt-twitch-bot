@@ -1,11 +1,13 @@
 class TwitchBotLayer extends CanvasLayer {
   constructor() {
     super();
+    this.layername = "twitchbot";
+
     console.log("Twitch Bot | Drawing Layer | Loaded into Drawing Layer");
   }
 
   setButtons() {
-    tbLayer.newButtons = {
+    this.newButtons = {
       name: "TwitchBot",
       icon: "fas fa-wrench",
       layer: "TwitchBotLayer",
@@ -18,7 +20,7 @@ class TwitchBotLayer extends CanvasLayer {
           onClick: () =>
             TriggerVote("What is next?", [
               "Goblin Attack",
-              "Delivery from God",
+              "A Gift From God",
               "They All Argue for 20 mins",
             ]),
         },
@@ -36,22 +38,28 @@ class TwitchBotLayer extends CanvasLayer {
     Hooks.on("getSceneControlButtons", (controls) => {
       console.log("Twitch Bot | Testing User role = " + game.user.data.role);
       if (game.user.data.role == 4) {
-        controls.push(tbLayer.newButtons);
+        controls.push(this.newButtons);
       }
     });
   }
 }
 
-let tbLayer = new TwitchBotLayer();
-
-tbLayer.setButtons();
-tbLayer.newHookTest();
-
 Hooks.once("canvasInit", () => {
   // Add TwitchBotLayer to canvas
   const layerct = canvas.stage.children.length;
-  canvas.twitchBot = canvas.stage.addChildAt(new TwitchBotLayer(), layerct);
+  let tbLayer = new TwitchBotLayer();
+
+  tbLayer.setButtons();
+  tbLayer.newHookTest();
+  canvas.twitchBot = canvas.stage.addChildAt(tbLayer, layerct);
   canvas.twitchBot.draw();
+
+  let theLayers = Canvas.layers;
+  theLayers.twitchBot = TwitchBotLayer;
+
+  Object.defineProperty(Canvas, 'layers', {get: function() {
+      return theLayers
+  }})
 });
 
 Hooks.on("init", function () {
