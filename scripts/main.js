@@ -1,3 +1,59 @@
+class TwitchBotLayer extends CanvasLayer {
+  constructor() {
+    super();
+    console.log("Twitch Bot | Drawing Layer | Loaded into Drawing Layer");
+  }
+
+  setButtons() {
+    tbLayer.newButtons = {
+      name: "TwitchBot",
+      icon: "fas fa-wrench",
+      layer: "TwitchBotLayer",
+      title: "Twitch Bot Controls",
+      tools: [
+        {
+          icon: "fas fas fa-vote-yea",
+          name: "TriggerVote",
+          title: "Trigger Vote",
+          onClick: () =>
+            TriggerVote("What is next?", [
+              "Goblin Attack",
+              "Delivery from God",
+              "They All Argue for 20 mins",
+            ]),
+        },
+        {
+          icon: "fas fa-hand-paper",
+          name: "EndVote",
+          title: "End Vote",
+          onClick: () => EndVote(),
+        },
+      ],
+    };
+  }
+
+  newHookTest() {
+    Hooks.on("getSceneControlButtons", (controls) => {
+      console.log("Twitch Bot | Testing User role = " + game.user.data.role);
+      if (game.user.data.role == 4) {
+        controls.push(tbLayer.newButtons);
+      }
+    });
+  }
+}
+
+let tbLayer = new TwitchBotLayer();
+
+tbLayer.setButtons();
+tbLayer.newHookTest();
+
+Hooks.once("canvasInit", () => {
+  // Add TwitchBotLayer to canvas
+  const layerct = canvas.stage.children.length;
+  canvas.twitchBot = canvas.stage.addChildAt(new TwitchBotLayer(), layerct);
+  canvas.twitchBot.draw();
+});
+
 Hooks.on("init", function () {
   game.settings.register("foundry-twitch-bot", "twitchBotChannelNames", {
     name: "Player Channel Names",
@@ -40,6 +96,12 @@ Hooks.on("ready", function () {
       }
     }
   });
+});
+
+Hooks.on("getSceneControlButtons", (controls) => {
+  if (game.user.data.role == 4) {
+    controls.push();
+  }
 });
 
 window.TwitchBot = {
@@ -106,13 +168,12 @@ window.EndVote = () => {
       `<h1>
       ${TwitchBot.voteTopic}
       </h1>
-      </br> THE WINNER IS: ${winner} with ${voteCount} vote
-      ${voteCount > 1 ? "s" : ""}! 👏👏👏`
+      </br> THE WINNER IS: ${winner} with ${voteCount} vote${
+        voteCount > 1 ? "s" : ""
+      }! 👏👏👏`
     );
   } else {
-    WhisperGM(
-      `There is no active vote!`
-    );
+    WhisperGM(`There is no active vote!`);
   }
   TwitchBot.votingIsOn = false;
   TwitchBot.options = {};
