@@ -1,5 +1,5 @@
-import TwitchBotLayer from './classes/TwitchBotLayer.js';
-import {TwitchBot} from './scripts/twitch-bot.js';
+import TwitchBotLayer from "./classes/TwitchBotLayer.js";
+import { TwitchBot } from "./scripts/twitch-bot.js";
 
 Hooks.once("canvasInit", () => {
   // Add TwitchBotLayer to canvas
@@ -14,9 +14,11 @@ Hooks.once("canvasInit", () => {
   let theLayers = Canvas.layers;
   theLayers.twitchBot = TwitchBotLayer;
 
-  Object.defineProperty(Canvas, 'layers', {get: function() {
-      return theLayers
-  }})
+  Object.defineProperty(Canvas, "layers", {
+    get: function () {
+      return theLayers;
+    },
+  });
 });
 
 Hooks.on("init", function () {
@@ -32,7 +34,6 @@ Hooks.on("init", function () {
 });
 
 Hooks.on("ready", function () {
-
   // Set up twitch chat reader
   TwitchBot.client = new tmi.Client({
     connection: {

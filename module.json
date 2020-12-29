@@ -12,6 +12,7 @@
     "/scripts/tmi.min.js",
     "/scripts/twitch-bot.js",
     "/classes/TwitchBotLayer.js",
+    "/classes/SimplePollForm.js",
     "/main.js"
   ],
   "languages": [
