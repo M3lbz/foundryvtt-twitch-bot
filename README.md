@@ -1,29 +1,29 @@
-# README #
+# Twitch-Bot #
+This is a module for Foundryvtt that enables the monitoring of twitch channels. We assume that there is only one GM and they act as the central 'server' for monitoring.
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## WARNING ##
+Everything is run and persisted in browser memory, refreshing the page will clear any active polls. I plan on fixing this through session storage eventually
 
-### What is this repository for? ###
+## Configuration ##
+`Player Channel Names` - Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2' - Changing this field required a refresh of the browser window.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## Features ##
+### Chat
+All chats from any monitored twich channel are whispered to the GM
 
-### How do I get set up? ###
+### Polls
+Set up Polls by creating a macro with the wollowing:
+``` Javascript
+// TriggerVote(pollname, arrayOfOptions)
+TriggerVote('What is next?', ['Goblin Attack', 'Delivery from God', 'They All Argue for 20 mins'])
+```
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Polls are ended with the following Macro:
+``` Javascript
+EndVote()
+```
 
-### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+## License
+- This work is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/legalcode).
+- This work is licensed under the [Foundry Virtual Tabletop EULA - Limited License Agreement for Module Development](https://foundryvtt.com/article/license/).

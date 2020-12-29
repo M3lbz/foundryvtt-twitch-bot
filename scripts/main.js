@@ -1,39 +1,44 @@
-Hooks.on('init', function() {
-  game.settings.register('foundry-twitch-bot', 'twitchBotChannelNames', {
-    name: 'Player Channel Names',
-    hint: 'Comma delimited list of channels you would like to monitor the chat for. e.g. \'channel1,channel2\' (requires refresh)',
-    scope: 'world',
+Hooks.on("init", function () {
+  game.settings.register("foundry-twitch-bot", "twitchBotChannelNames", {
+    name: "Player Channel Names",
+    hint:
+      "Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2' (requires refresh)",
+    scope: "world",
     config: true,
     type: String,
-    default: ''
+    default: "",
   });
 });
 
-
-Hooks.on('ready', function() {
- console.log('TwitchBot');
- console.log(TwitchBot);
+Hooks.on("ready", function () {
+  console.log("TwitchBot");
+  console.log(TwitchBot);
 
   // Set up twitch chat reader
   TwitchBot.client = new tmi.Client({
     connection: {
       secure: true,
-      reconnect: true
+      reconnect: true,
     },
-    channels: game.settings.get('foundry-twitch-bot', 'twitchBotChannelNames').split(',').map((c) => c.trim())
-  });  
+    channels: game.settings
+      .get("foundry-twitch-bot", "twitchBotChannelNames")
+      .split(",")
+      .map((c) => c.trim()),
+  });
 
   TwitchBot.client.connect().catch(console.error);
 
-  TwitchBot.client.on('message', (channel, tags, message, self) => {
-      //if we are not the game master do not send the whisper
-      if (game.user.isGM) {
-        WhisperGM(`<b>${tags['display-name']}</b>: ${message} <i>(${channel})</i>`);
-        
-        if (TwitchBot.votingIsOn && /^\d+$/.test(message)) {
-          Vote(tags.username, message);
-        }
-      } 
+  TwitchBot.client.on("message", (channel, tags, message, self) => {
+    //if we are not the game master do not send the whisper
+    if (game.user.isGM) {
+      WhisperGM(
+        `<b>${tags["display-name"]}</b>: ${message} <i>(${channel})</i>`
+      );
+
+      if (TwitchBot.votingIsOn && /^\d+$/.test(message)) {
+        Vote(tags.username, message);
+      }
+    }
   });
 });
 
@@ -49,12 +54,12 @@ window.WhisperGM = (content) => {
   ChatMessage.create({
     content: content,
     whisper: [game.users.find((u) => u.isGM)],
-    speaker: ChatMessage.getSpeaker({ alias: 'Twitch' })
+    speaker: ChatMessage.getSpeaker({ alias: "Twitch" }),
   });
-}
+};
 
 window.TriggerVote = (name, data) => {
-  console.log('TriggerVote');
+  console.log("TriggerVote");
   TwitchBot.voteTopic = name;
   TwitchBot.voters = {};
   TwitchBot.votingIsOn = true;
@@ -67,34 +72,48 @@ window.TriggerVote = (name, data) => {
   WhisperGM(`
     <h1>${TwitchBot.voteTopic}</h1>
     </br>
-    <ol>${data.map(opt => `<li>${opt}</li>`).join("")}</ol>
+    <ol>${data.map((opt) => `<li>${opt}</li>`).join("")}</ol>
     `);
-
-}
+};
 
 window.Vote = (name, vote) => {
-    const optionsAsArray = Object.keys(TwitchBot.options);
-    
-    // Ignore invalid votes
-    if(vote > optionsAsArray.length) return;
+  const optionsAsArray = Object.keys(TwitchBot.options);
 
-    const voteAsIndex = vote - 1;
-    const hasVoted = !!(TwitchBot.voters[name] || TwitchBot.voters[name] === 0);
+  // Ignore invalid votes
+  if (vote > optionsAsArray.length) return;
 
-    // If the user has voted before, remove their previous vote
-    if(hasVoted) {
-      TwitchBot.options[optionsAsArray[TwitchBot.voters[name]]] -= 1;
-    }
+  const voteAsIndex = vote - 1;
+  const hasVoted = !!(TwitchBot.voters[name] || TwitchBot.voters[name] === 0);
 
-    // Record user's vote and add a vote to the option
-    TwitchBot.voters[name] = voteAsIndex;
-    TwitchBot.options[optionsAsArray[voteAsIndex]] += 1;
+  // If the user has voted before, remove their previous vote
+  if (hasVoted) {
+    TwitchBot.options[optionsAsArray[TwitchBot.voters[name]]] -= 1;
   }
 
-  window.EndVote = () => {
-  const winner = Object.entries(TwitchBot.options).sort((a, b) => b[1] - a[1])[0][0];
+  // Record user's vote and add a vote to the option
+  TwitchBot.voters[name] = voteAsIndex;
+  TwitchBot.options[optionsAsArray[voteAsIndex]] += 1;
+};
 
-  WhisperGM(`<h1>${TwitchBot.voteTopic}</h1> </br> THE WINNER IS: ${winner} 👏👏👏`);
+window.EndVote = () => {
+  if (TwitchBot.votingIsOn) {
+    const winner = Object.entries(TwitchBot.options).sort(
+      (a, b) => b[1] - a[1]
+    )[0][0];
+    const voteCount = TwitchBot.options[winner];
+
+    WhisperGM(
+      `<h1>
+      ${TwitchBot.voteTopic}
+      </h1>
+      </br> THE WINNER IS: ${winner} with ${voteCount} vote
+      ${voteCount > 1 ? "s" : ""}! 👏👏👏`
+    );
+  } else {
+    WhisperGM(
+      `There is no active vote!`
+    );
+  }
   TwitchBot.votingIsOn = false;
   TwitchBot.options = {};
-}
+};
