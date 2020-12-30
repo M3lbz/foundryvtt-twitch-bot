@@ -24,7 +24,7 @@ EndVote()
 ```
 
 ### GM Actions
-![GM Buttons](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/src/master/img/GM%20Buttons.jpg)
+![GM Buttons](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/raw/master/img/GM%20Buttons.jpg)
 
 
 ## License
