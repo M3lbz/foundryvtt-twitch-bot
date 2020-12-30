@@ -24,7 +24,7 @@ EndVote()
 ```
 
 ### GM Actions
-![GM Buttons](img/GM Buttons.jpg)
+![GM Buttons](/img/GM Buttons.jpg)
 
 
 ## License
