@@ -9,7 +9,7 @@ Everything is run and persisted in browser memory, refreshing the page will clea
 
 ## Features ##
 ### Chat
-All chats from any monitored twich channel are whispered to the GM
+All chats from any monitored twich channel are whispered to the GM. (Soon to be toggleable)
 
 ### Polls
 Set up Polls by creating a macro with the wollowing:
@@ -22,6 +22,9 @@ Polls are ended with the following Macro:
 ``` Javascript
 EndVote()
 ```
+
+### GM Actions
+![GM Buttons](img/GM Buttons.jpg)
 
 
 ## License
