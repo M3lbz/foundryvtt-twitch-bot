@@ -30,6 +30,8 @@ window.TriggerVote = (name, data) => {
       </br>
       <ol>${data.map((opt) => `<li>${opt}</li>`).join("")}</ol>
       `);
+
+  SetPollStateToCache();
 };
 
 window.Vote = (name, vote) => {
@@ -49,6 +51,8 @@ window.Vote = (name, vote) => {
   // Record user's vote and add a vote to the option
   TwitchBot.voters[name] = voteAsIndex;
   TwitchBot.options[optionsAsArray[voteAsIndex]] += 1;
+
+  SetPollStateToCache();
 };
 
 window.EndVote = () => {
@@ -69,6 +73,25 @@ window.EndVote = () => {
   } else {
     WhisperGM(`There is no active vote!`);
   }
+
+  TwitchBot.voteTopic = "";
+  TwitchBot.voters = {};
   TwitchBot.votingIsOn = false;
   TwitchBot.options = {};
+
+  SetPollStateToCache();
+};
+
+window.GetPollStateFromCache = () => {
+  TwitchBot.voteTopic = localStorage.getItem("twichbot.voteTopic");
+  TwitchBot.voters = JSON.parse(localStorage.getItem("twichbot.voters"));
+  TwitchBot.votingIsOn = localStorage.getItem("twichbot.votingIsOn");
+  TwitchBot.options = JSON.parse(localStorage.getItem("twichbot.options"));
+};
+
+window.SetPollStateToCache = () => {
+  localStorage.setItem("twichbot.voteTopic", TwitchBot.voteTopic);
+  localStorage.setItem("twichbot.voters", JSON.stringify(TwitchBot.voters));
+  localStorage.setItem("twichbot.votingIsOn", TwitchBot.votingIsOn);
+  localStorage.setItem("twichbot.options", JSON.stringify(TwitchBot.options));
 };

@@ -22,6 +22,9 @@ Hooks.once("canvasInit", () => {
 });
 
 Hooks.on("init", function () {
+  // Get active Poll from cache
+  GetPollStateFromCache();
+
   // Set up Settings
   game.settings.register("foundry-twitch-bot", "twitchBotChannelNames", {
     name: "Player Channel Names",
