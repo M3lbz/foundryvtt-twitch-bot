@@ -26,17 +26,19 @@ Hooks.on("init", function () {
   game.settings.register("foundry-twitch-bot", "twitchBotChannelNames", {
     name: "Player Channel Names",
     hint:
-      "Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2' (requires refresh)",
+      "Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2'",
     scope: "world",
     config: true,
     type: String,
     default: "",
+    onChange: (value) => {
+      SetupTwitchClient();
+    },
   });
-  
+
   game.settings.register("foundry-twitch-bot", "twitchBotAllChatMessages", {
     name: "Whisper All Chats",
-    hint:
-      "Check this box to send all chats from all channels to the GM",
+    hint: "Check this box to send all chats from all channels to the GM",
     scope: "world",
     config: true,
     type: Boolean,
@@ -45,6 +47,16 @@ Hooks.on("init", function () {
 });
 
 Hooks.on("ready", function () {
+  SetupTwitchClient();
+});
+
+Hooks.on("getSceneControlButtons", (controls) => {
+  if (game.user.data.role == 4) {
+    controls.push();
+  }
+});
+
+function SetupTwitchClient() {
   // Set up twitch chat reader
   TwitchBot.client = new tmi.Client({
     connection: {
@@ -60,9 +72,11 @@ Hooks.on("ready", function () {
   TwitchBot.client.connect().catch(console.error);
 
   TwitchBot.client.on("message", (channel, tags, message, self) => {
-    //if we are not the game master do not send the whisper
-    console.log(game.settings.get("foundry-twitch-bot", "twitchBotAllChatMessages"));
-    if (game.user.isGM && game.settings.get("foundry-twitch-bot", "twitchBotAllChatMessages")) {
+    // If we are not the game master do not send the whisper
+    if (
+      game.user.isGM &&
+      game.settings.get("foundry-twitch-bot", "twitchBotAllChatMessages")
+    ) {
       WhisperGM(
         `<b>${tags["display-name"]}</b>: ${message} <i>(${channel})</i>`
       );
@@ -72,10 +86,4 @@ Hooks.on("ready", function () {
       }
     }
   });
-});
-
-Hooks.on("getSceneControlButtons", (controls) => {
-  if (game.user.data.role == 4) {
-    controls.push();
-  }
-});
+}
