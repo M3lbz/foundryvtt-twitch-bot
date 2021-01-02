@@ -6,6 +6,7 @@ Everything is run and persisted in browser memory, refreshing the page will clea
 
 ## Configuration ##
 `Player Channel Names` - Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2' - Changing this field required a refresh of the browser window.
+`Whisper All Chats` - Check this box to send all chats from all channels to the GM.
 
 ## Features ##
 ### Chat

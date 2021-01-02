@@ -22,6 +22,7 @@ Hooks.once("canvasInit", () => {
 });
 
 Hooks.on("init", function () {
+  // Set up Settings
   game.settings.register("foundry-twitch-bot", "twitchBotChannelNames", {
     name: "Player Channel Names",
     hint:
@@ -30,6 +31,16 @@ Hooks.on("init", function () {
     config: true,
     type: String,
     default: "",
+  });
+  
+  game.settings.register("foundry-twitch-bot", "twitchBotAllChatMessages", {
+    name: "Whisper All Chats",
+    hint:
+      "Check this box to send all chats from all channels to the GM",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
   });
 });
 
@@ -50,7 +61,8 @@ Hooks.on("ready", function () {
 
   TwitchBot.client.on("message", (channel, tags, message, self) => {
     //if we are not the game master do not send the whisper
-    if (game.user.isGM) {
+    console.log(game.settings.get("foundry-twitch-bot", "twitchBotAllChatMessages"));
+    if (game.user.isGM && game.settings.get("foundry-twitch-bot", "twitchBotAllChatMessages")) {
       WhisperGM(
         `<b>${tags["display-name"]}</b>: ${message} <i>(${channel})</i>`
       );
