@@ -2,8 +2,8 @@
 This is a module for Foundryvtt that enables the monitoring of twitch channels. We assume that there is only one GM and they act as the central 'server' for monitoring.
 
 ## Configuration ##
-`Player Channel Names` - Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2'.
-`Whisper All Chats` - Check this box to send all chats from all channels to the GM.
+- ` Player Channel Names` - Comma delimited list of channels you would like to monitor the chat for. e.g. 'channel1,channel2'.
+- `Whisper All Chats` - Check this box to send all chats from all channels to the GM.
 
 ## Features ##
 ### Chat
@@ -30,5 +30,5 @@ EndVote()
 - This work is licensed under the [Foundry Virtual Tabletop EULA - Limited License Agreement for Module Development](https://foundryvtt.com/article/license/).
 
 ### Bugs
-Veiw current known bugs in the [Issue Tracker Backlog](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues?status=new&status=open)
-Log new bugs in the [Issue Tracker](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues/new)
+- Veiw current known bugs in the [Issue Tracker Backlog](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues?status=new&status=open)
+- Log new bugs in the [Issue Tracker](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues/new)
