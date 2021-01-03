@@ -30,5 +30,5 @@ EndVote()
 - This work is licensed under the [Foundry Virtual Tabletop EULA - Limited License Agreement for Module Development](https://foundryvtt.com/article/license/).
 
 ### Bugs
-- Veiw current known bugs in the [Issue Tracker Backlog](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues?status=new&status=open)
+- View current known bugs in the [Issue Tracker Backlog](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues?status=new&status=open)
 - Log new bugs in the [Issue Tracker](https://bitbucket.org/Melbz/foundryvtt-twitch-bot/issues/new)
